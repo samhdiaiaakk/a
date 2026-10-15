@@ -1,0 +1,110 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>2ショットAR（簡易）</title>
+<style>
+  body { margin:0; overflow:hidden; background:#000; }
+  canvas { position:absolute; top:0; left:0; }
+  #ui {
+    position:fixed; bottom:10px; left:10px; z-index:10;
+    background:rgba(0,0,0,0.5); padding:8px; border-radius:8px;
+  }
+</style>
+</head>
+<body>
+
+<video id="video" autoplay playsinline style="display:none;"></video>
+<canvas id="canvas"></canvas>
+
+<div id="ui">
+  <input type="file" id="upload" accept="image/*">
+  <button id="save">保存</button>
+</div>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let img = null;
+let x = 100, y = 100;
+let scale = 1;
+let dragging = false;
+
+// --- カメラ起動 ---
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+.then(stream => {
+  video.srcObject = stream;
+  video.onloadedmetadata = () => {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    render();
+  };
+});
+
+// --- 画像アップロード ---
+document.getElementById('upload').onchange = e => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    img = new Image();
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+// --- 描画ループ ---
+function render() {
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  if (img) {
+    const w = img.width * scale;
+    const h = img.height * scale;
+    ctx.drawImage(img, x, y, w, h);
+  }
+
+  requestAnimationFrame(render);
+}
+
+// --- ドラッグ ---
+canvas.addEventListener('mousedown', e => {
+  dragging = true;
+});
+canvas.addEventListener('mouseup', () => dragging = false);
+canvas.addEventListener('mousemove', e => {
+  if (dragging) {
+    x += e.movementX;
+    y += e.movementY;
+  }
+});
+
+// --- タッチ操作 ---
+canvas.addEventListener('touchstart', e => dragging = true);
+canvas.addEventListener('touchend', () => dragging = false);
+canvas.addEventListener('touchmove', e => {
+  if (dragging) {
+    x = e.touches[0].clientX;
+    y = e.touches[0].clientY;
+  }
+});
+
+// --- ホイールで拡大 ---
+canvas.addEventListener('wheel', e => {
+  scale += e.deltaY * -0.001;
+  scale = Math.max(0.1, scale);
+});
+
+// --- 保存 ---
+document.getElementById('save').onclick = () => {
+  const link = document.createElement('a');
+  link.download = 'shot.png';
+  link.href = canvas.toDataURL();
+  link.click();
+};
+</script>
+
+</body>
+</html>
+```
