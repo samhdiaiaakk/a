@@ -7,3 +7,8 @@
 - StartPage-masahida: https://samhdiaiaakk.github.io/a/StartPage-masahida/
 - StartPage-miyazaki: https://samhdiaiaakk.github.io/a/StartPage-miyazaki/
 - StartPage-samhdi:   https://samhdiaiaakk.github.io/a/StartPage-samhdi/
+
+### GitHubにプッシュ
+1. git add .
+2. git commit -m "commit"
+3. git push -u origin main --force
