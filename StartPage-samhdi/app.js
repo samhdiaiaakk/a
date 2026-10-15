@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 簡易CSVパーサー（# または // で始まる行、および空行をコメントとしてスキップ）
     function parseCSV(text) {
         const lines = text.trim().split("\n");
-        const headers = lines[0].split(",");
+        if (lines.length === 0) return [];
+        
+        // ヘッダー行を取得
+        const headers = lines[0].split(",").map(h => h.trim());
         const result = [];
 
         for (let i = 1; i < lines.length; i++) {
@@ -18,12 +21,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 continue;
             }
 
-            const currentLine = line.split(",");
-            if (currentLine.length < headers.length) continue;
+            // カンマで分割（最大4つ: row, column, name, url）
+            const parts = line.split(",");
+            if (parts.length < 2) continue;
 
             const obj = {};
             for (let j = 0; j < headers.length; j++) {
-                obj[headers[j].trim()] = currentLine[j] ? currentLine[j].trim() : "";
+                obj[headers[j]] = parts[j] ? parts[j].trim() : "";
             }
             result.push(obj);
         }
@@ -31,7 +35,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch("links_rc.csv");
+        // ※ 実際に配置しているCSVファイル名に合わせる（ここでは "links.csv"）
+        const response = await fetch("links.csv");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const csvText = await response.text();
         const rawData = parseCSV(csvText);
 
@@ -42,7 +50,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const r = parseInt(row.row, 10);
             const c = parseInt(row.column, 10);
             const name = row.name;
-            const url = row.url;
+            const url = row.url || "";
+
+            if (isNaN(r) || isNaN(c)) return;
 
             if (!rowsMap[r]) rowsMap[r] = {};
             if (!rowsMap[r][c]) {
@@ -67,16 +77,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // 配列形式に変換
-        const linkData = [];
-        Object.keys(rowsMap).sort((a, b) => a - b).forEach(r => {
-            const rowCategories = [];
-            Object.keys(rowsMap[r]).sort((a, b) => a - b).forEach(c => {
-                rowCategories.push(rowsMap[r][c]);
-            });
-            linkData.push(rowCategories);
-        });
-
         // 再帰的にリスト（ul/li）を生成する関数
         function createMenu(items) {
             const ul = document.createElement("ul");
@@ -85,9 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const li = document.createElement("li");
                 const a = document.createElement("a");
                 a.textContent = item.name;
-                a.href = item.url || "#";
-                a.target = "_blank";
-                a.rel = "noopener noreferrer";
+                a.href = item.url && item.url !== "#" ? item.url : "#";
+                if (item.url && item.url !== "#") {
+                    a.target = "_blank";
+                    a.rel = "noopener noreferrer";
+                }
                 li.appendChild(a);
 
                 if (item.subItems && item.subItems.length > 0) {
@@ -102,16 +104,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // 描画処理
-        linkData.forEach(row => {
+        Object.keys(rowsMap).sort((a, b) => a - b).forEach(r => {
             const rowGroup = document.createElement("div");
             rowGroup.className = "row-group";
 
-            row.forEach(cat => {
+            Object.keys(rowsMap[r]).sort((a, b) => a - b).forEach(c => {
+                const cat = rowsMap[r][c];
                 const categoryDiv = document.createElement("div");
                 categoryDiv.className = "category";
 
                 const h2 = document.createElement("h2");
-                h2.textContent = cat.category;
+                h2.textContent = cat.category || "";
                 categoryDiv.appendChild(h2);
 
                 const menuUl = createMenu(cat.items);
