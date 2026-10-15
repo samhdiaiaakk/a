@@ -1,0 +1,70 @@
+/* GitHubPages/a/StartPage-masahida/style.css */
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    color: #333;
+}
+
+h1, h2{
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+}
+
+h1 {
+    font-size: 1.8em;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+ul {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 0.2em;
+}
+
+/* 3列レイアウト用 */
+.columns-3 {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.columns-3 > div {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* 2列レイアウト用 */
+.columns-2 {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.columns-2 > div {
+    flex: 1;
+    min-width: 320px;
+}
+
+/* ToDOボックス */
+.todo-box {
+    border: 1px solid #ccc;
+    padding: 15px;
+    background-color: #fafafa;
+}
