@@ -1,0 +1,204 @@
+# GitHubPages/a/StartPage-samhdi/links.csv
+
+row,column,name,url
+# ==============================================================
+# ========================== 1行目 ==============================
+# ==============================================================
+1,1,[💻 Google],
+1,1,Google,https://www.google.com
+1,1,Google Keep,https://keep.google.com
+1,1,Google 日~英,https://translate.google.com
+1,1,Gmail,https://mail.google.com
+1,1,Google Map,https://maps.google.com
+1,1,Google Drive,https://drive.google.com
+1,1,Google Calendar,https://calendar.google.com
+1,2,[💻 Notionページ],
+1,2,///スタートページ,#
+1,2,///マイページ,#
+1,2,///外国語ページ,#
+1,2,///英語ページ,#
+1,2,///生活ページ,#
+1,2,///勉強ページ,#
+1,2,///PCページ,#
+1,3,[💻 便利ツール],
+1,3,時計,#
+1,3,Web計算機,#
+1,3,タイマー,#
+1,3,ストップウォッチ,#
+1,3,スピードテスト,#
+1,3,capybara,#
+1,4,[💻 AIツール],
+1,4,Chat-GPT,https://chatgpt.com
+1,4,Gemini,https://gemini.google.com
+1,4,Claude,https://claude.ai
+1,4,Notebook LM,https://notebooklm.google.com
+1,4,ひろゆき音声,#
+1,4,Top Pods,#
+1,4,   AI敬語変換,#
+# ==============================================================
+# ========================== 2行目 ==============================
+# ==============================================================
+2,1,[💻 Windows Port],
+2,1,2283:Immich,http://localhost:2283
+2,1,3000:Growi,http://localhost:3000
+2,1,4000:Ollama,http://localhost:4000
+2,1,8080:PukiWiki,http://localhost:8080
+2,1,8085:OH Monitor,http://localhost:8085
+2,1,19999:netdata,http://localhost:19999
+2,2,[💻 Windows Dev],
+2,2,Chrome RDP,#
+2,2,Talescale,#
+2,2,Notion Developer,#
+2,2,Indify,#
+2,2,Slack API,#
+2,2,Health Checks,#
+2,3,[💻 開発サービス],
+2,3,GitHub,https://github.com
+2,3,Github/Homepage,#
+2,3,GitLab,https://gitlab.com
+2,3,OverLeaf,https://www.overleaf.com
+2,3,SpringBoot,https://spring.io
+2,4,[💻 論文執筆],
+2,4,Google Scholar,https://scholar.google.co.jp
+2,4,DeepL,https://www.deepl.com
+2,4,文字数チェック,#
+2,4,オンラインメモ帳,#
+2,4,ギリシャ文字,#
+# ==============================================================
+# ========================== 3行目 ==============================
+# ==============================================================
+3,1,[📕 メール・フォルダ],
+3,1,Outlook,https://outlook.live.com
+3,1,Dropbox,https://www.dropbox.com
+3,1,iCloud,https://www.icloud.com
+3,1,ギガファイル便,https://gigafile.nu
+3,2,[📕 インフラ],
+3,2,マイナポータル,https://myna.go.jp
+3,2,大阪ガス,#
+3,2,トリセツ,#
+3,3,[📕 通販],
+3,3,amazon,https://www.amazon.co.jp
+3,3,zozoTOWN,https://zozo.jp
+3,3,じゃんぱら,https://www.janpara.co.jp
+3,3,ニトリ,https://www.nitori-net.jp
+3,3,日本郵政,https://www.post.japanpost.jp
+3,3,   郵便追跡,https://trackings.post.japanpost.jp
+3,3,ビックカメラ,https://www.biccamera.com
+3,4,[📕 一旦リンク],
+3,4,Easy Chair,#
+3,4,Slido,https://www.slido.com
+# ==============================================================
+# ========================== 4行目 ==============================
+# ==============================================================
+4,1,[✈️ Yahoo・NERV],
+4,1,Yahoo!JAPAN,https://www.yahoo.co.jp
+4,1,Yahoo!天気全体,https://weather.yahoo.co.jp
+4,1,Yahoo!天気雨雲,https://weather.yahoo.co.jp/weather/raincloud/
+4,1,Yahoo!乗換案内,https://transit.yahoo.co.jp
+4,1,NAVITIME,https://www.navitime.co.jp
+4,1,特務機関NERV防災,https://nerv.app
+4,2,[✈️ トラベル],
+4,2,宮崎カーフェリー,https://www.miyazakicarferry.com
+4,2,Google Flight,https://www.google.com/travel/flights
+4,2,trip.com,https://jp.trip.com
+4,2,sky scanner,https://www.skyscanner.jp
+4,2,e5489（西日本）,https://www.jr-odekake.net/goyoyaku/
+4,2,スマートEX,https://smart-ex.jp
+4,2,airbnb,https://www.airbnb.jp
+4,2,booking.com,https://www.booking.com
+4,3,[✈️ 予約],
+4,3,食べログ,https://tabelog.com
+4,3,Hot Pepper Beauty,https://beauty.hotpepper.jp
+4,3,塾講師バイト,#
+4,3,歯医者予約EPARK,https://epark.jp
+4,3,Qsurutto,#
+4,3,ローチケ,https://l-tike.com
+4,3,T-JOY,https://t-joy.jp
+4,4,[✈️ 一旦リンク],
+4,4,（準備中）,#
+# ==============================================================
+# ========================== 5行目 ==============================
+# ==============================================================
+5,1,[🏫 京都大学],
+5,1,全学生共通ポータル,#
+5,1,情報環境機構,https://www.iimc.kyoto-u.ac.jp
+5,1,copilot,https://copilot.microsoft.com
+5,1,GakuNin,https://gakunin.jp
+5,1,MATLAB,https://jp.mathworks.com
+5,2,[🏫 京都研究],
+5,2,海老原研究室,#
+5,2,会議室予約,#
+5,2,利用者ポータル,#
+5,2,マニュアル,#
+5,2,Open OnDemand,#
+5,2,メンテナンス,#
+5,3,[🏫 京都生活],
+5,3,KUON,#
+5,3,Bellevie Club,#
+5,3,エデゥバイト,#
+5,3,教育コーチ育成講座,#
+5,3,代講フォーム,#
+5,3,Payポータル,#
+5,4,[🏫 保険・奨学関係],
+5,4,奨学金JASSO,https://www.jasso.go.jp
+5,4,COOP共済,https://kyosai.univcoop.or.jp
+5,4,自賠責保険（JIBAI）,#
+5,4,こくみん共済,https://www.zenkokurouren.jp
+# ==============================================================
+# ========================== 6行目 ==============================
+# ==============================================================
+6,1,[🤟 ネットビデオ],
+6,1,Apple Music,https://music.apple.com
+6,1,YouTube,https://www.youtube.com
+6,1,ニコニコ,https://www.nicovideo.jp
+6,1,Tiktok,https://www.tiktok.com
+6,1,dアニメ,https://animestore.docomo.ne.jp
+6,2,[🤟 テレビビデオ],
+6,2,Tver,https://tver.jp
+6,2,Abema,https://abema.tv
+6,2,Prime Video,https://www.amazon.co.jp/primevideo
+6,2,Netflix,https://www.netflix.com
+6,2,U-NEXT,https://video.unext.jp
+6,2,Hulu,https://www.hulu.jp
+6,2,FOD,https://fod.fujitv.co.jp
+6,3,[🤟 SNS],
+6,3,LINE Developer,https://developers.line.biz
+6,3,LINE OAM,#
+6,3,Instagram,https://www.instagram.com
+6,3,twitter,https://twitter.com
+6,3,Face Book,https://www.facebook.com
+6,3,Slack,https://slack.com
+6,3,Discode,https://discord.com
+6,4,[🤟 ORE],
+6,4,Fap Roulette,#
+6,4,DLsite,https://www.dlsite.com
+6,4,DLsite My page,https://www.dlsite.com/mypage
+6,4,pixiv,https://www.pixiv.net
+# ==============================================================
+# ========================== 7行目 ==============================
+# ==============================================================
+7,1,[🏫 神戸大学],
+7,1,うりぼーポータル,https://www.uribou.kobe-u.ac.jp
+7,1,大学生協ポータル,https://www.u-coop.net
+7,1,神大工学部,https://www.eng.kobe-u.ac.jp
+7,1,神大工学部電電,#
+7,1,ES4Wiki,#
+7,1,ES4新Wiki,#
+7,2,[🏫 神戸生活],
+7,2,オフィスステション,#
+7,2,インフォマート,#
+7,2,サイカパーク,#
+7,2,レジ金精算,#
+7,3,[🎮 娯楽],
+7,3,小説家になろう,https://syosetu.com
+7,3,Yostar,https://www.yostar.co.jp
+7,3,雀魂,https://mahjongsoul.com
+7,3,艦これ,https://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/
+7,4,[🎮 ゲーム攻略],
+7,4,ポケポケ攻略,#
+7,4,ポケダンDX攻略,#
+7,4,あつ森攻略,#
+7,4,スプラ3攻略,#
+7,4,パズドラ攻略,#
+7,4,セルサバイバー攻略,#
+7,4,艦これ攻略,#
