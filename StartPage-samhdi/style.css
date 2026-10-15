@@ -1,0 +1,100 @@
+/* GitHubPages/a/StartPage-samhdi/style.css */
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 30px 20px;
+    background: #fdfdfd;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: normal;
+    color: #555;
+}
+
+.title-divider {
+    border: none;
+    border-top: 1px solid #dcdcdc;
+    max-width: 1200px;
+    margin: 0 auto 30px auto;
+}
+
+.grid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    align-items: start;
+    
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.category {
+    background: transparent;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+h2 {
+    font-size: 0.95rem;
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+ul {
+    list-style-type: disc;     /* 1階層目：黒丸（●） */
+    margin: 0 0 0 1em;
+    padding: 0;
+}
+
+ul ul {
+    list-style-type: circle;   /* 2階層目：白丸（○） */
+    margin-top: 2px;
+}
+
+ul ul ul {
+    list-style-type: square;   /* 3階層目：四角（■） */
+}
+
+li {
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+}
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul ul {
+    margin-top: 2px;
+    margin-left: 12px;
+}
+
+@media (max-width: 900px) {
+    .row-group {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .row-group {
+        grid-template-columns: 1fr;
+    }
+}

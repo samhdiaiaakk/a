@@ -1,0 +1,299 @@
+<!-- GitHubPages/app-WeatherWidget/index.html -->
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>天気予報ウィジェット</title>
+  <style>
+    :root {
+      --bg: #f1f4f9;
+      --fg: #1a1a1a;
+      --sub: #666;
+      --border: #e3e3e3;
+      --accent: #2b6cb0;
+      --head-bg: #f5f7fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    /* 更新ボタンの配置とスタイル（左上） */
+    .top-bar {
+      margin-bottom: 8px;
+    }
+
+    .reload-btn {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fg);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .reload-btn:hover {
+      background: var(--head-bg);
+      border-color: var(--accent);
+    }
+
+    .reload-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    h2 {
+      font-size: 15px;
+      margin: 16px 0 8px;
+      padding-left: 8px;
+      border-left: 4px solid var(--accent);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--border);
+      text-align: center;
+      padding: 6px 2px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    th {
+      background: var(--head-bg);
+      font-weight: 600;
+    }
+
+    td.rowlabel,
+    th.rowlabel {
+      background: var(--head-bg);
+      font-weight: 600;
+      width: 60px;
+    }
+
+    .icon {
+      font-size: 18px;
+      display: block;
+    }
+
+    .wtext {
+      font-size: 10px;
+      color: var(--sub);
+    }
+
+    /* フッター情報（地名・最終更新日時） */
+    .footer-info {
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      font-size: 11px;
+      color: var(--sub);
+    }
+
+    .footer-info div {
+      margin-top: 2px;
+    }
+
+    .error {
+      color: #c0392b;
+      font-size: 13px;
+    }
+
+    .loading {
+      font-size: 13px;
+      color: var(--sub);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== 設定ここだけ変えればOK ==================== -->
+  <script>
+    const CONFIG = {
+      placeName: "京都市伏見区",          // 表示用の地名
+      latitude: 34.9328,           // 緯度
+      longitude: 135.7642,          // 経度
+      autoRefreshMinutes: 30,      // 自動更新の間隔（分）。0で自動更新OFF
+    };
+    const TODAY_HOURS = [0, 3, 6, 12, 15, 18, 21]; // 表示する時刻(今日・明日共通)
+  </script>
+  <!-- ================================================================ -->
+
+  <!-- 左上の更新ボタン -->
+  <div class="top-bar">
+    <button id="reloadBtn" class="reload-btn" onclick="fetchWeather()">🔄 更新</button>
+  </div>
+
+  <div id="app">
+    <p class="loading">読み込み中...</p>
+  </div>
+
+  <!-- 最下部の情報（地点名・最終更新日時） -->
+  <div class="footer-info">
+    <div id="place"></div>
+    <div id="updated"></div>
+  </div>
+
+  <script>
+    const WMO = {
+      0: ["☀️", "快晴"], 1: ["🌤️", "晴れ"], 2: ["⛅", "晴れ時々曇り"], 3: ["☁️", "くもり"],
+      45: ["🌫️", "霧"], 48: ["🌫️", "霧氷"],
+      51: ["🌦️", "小雨"], 53: ["🌦️", "雨"], 55: ["🌧️", "強い雨"],
+      56: ["🌧️", "着氷性の雨"], 57: ["🌧️", "着氷性の強い雨"],
+      61: ["🌦️", "雨"], 63: ["🌧️", "雨"], 65: ["🌧️", "強い雨"],
+      66: ["🌧️", "着氷性の雨"], 67: ["🌧️", "着氷性の強い雨"],
+      71: ["🌨️", "雪"], 73: ["🌨️", "雪"], 75: ["❄️", "強い雪"], 77: ["🌨️", "霧雪"],
+      80: ["🌦️", "にわか雨"], 81: ["🌧️", "にわか雨"], 82: ["⛈️", "激しいにわか雨"],
+      85: ["🌨️", "にわか雪"], 86: ["❄️", "強いにわか雪"],
+      95: ["⛈️", "雷雨"], 96: ["⛈️", "雷雨(雹)"], 99: ["⛈️", "激しい雷雨(雹)"]
+    };
+    function wIcon(code) { return (WMO[code] || ["❔", "不明"])[0]; }
+    function wText(code) { return (WMO[code] || ["❔", "不明"])[1]; }
+
+    function fmtDate(dateStr) {
+      if (!dateStr) return "";
+      const days = ["日", "月", "火", "水", "木", "金", "土"];
+      const date = new Date(dateStr.replace(/-/g, "/"));
+      const m = String(date.getMonth() + 1).padStart(2, "0");
+      const d = String(date.getDate()).padStart(2, "0");
+      const w = days[date.getDay()];
+      return `${m}/${d} (${w})`;
+    }
+
+    async function fetchWeather() {
+      const btn = document.getElementById("reloadBtn");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "更新中...";
+      }
+
+      const { latitude, longitude, placeName } = CONFIG;
+      document.getElementById("place").textContent = "地点: " + placeName;
+
+      const cacheBuster = `&_t=${Date.now()}`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}` +
+        `&hourly=temperature_2m,relative_humidity_2m,precipitation,precipitation_probability,weather_code` +
+        `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
+        `&timezone=Asia%2FTokyo&forecast_days=8` + cacheBuster;
+
+      let data;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        data = await res.json();
+      } catch (e) {
+        document.getElementById("app").innerHTML =
+          `<p class="error">データ取得に失敗しました: ${e.message}</p>`;
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "🔄 再試行";
+        }
+        return;
+      }
+
+      const h = data.hourly;
+      const d = data.daily;
+
+      const byDate = {};
+      h.time.forEach((iso, i) => {
+        const date = iso.slice(0, 10);
+        const hour = new Date(iso).getHours();
+        (byDate[date] = byDate[date] || {})[hour] = i;
+      });
+      const dateKeys = Object.keys(byDate).sort();
+
+      function buildHourlyTable(dateKey, hours) {
+        const idxs = hours.map(hr => byDate[dateKey] ? byDate[dateKey][hr] : undefined);
+        const row = (label, cells) =>
+          `<tr><th class="rowlabel">${label}</th>${cells.join("")}</tr>`;
+
+        const headCells = hours.map(hr => `<th>${hr}時</th>`);
+        const weatherCells = idxs.map(i => i === undefined ? "<td>-</td>" :
+          `<td><span class="icon">${wIcon(h.weather_code[i])}</span><span class="wtext">${wText(h.weather_code[i])}</span></td>`);
+        const tempCells = idxs.map(i => i === undefined ? "<td>-</td>" : `<td>${Math.round(h.temperature_2m[i])}℃</td>`);
+        const popCells = idxs.map(i => i === undefined ? "<td>-</td>" : `<td>${h.precipitation_probability[i]}%</td>`);
+        const precipCells = idxs.map(i => i === undefined ? "<td>-</td>" : `<td>${h.precipitation[i].toFixed(1)}mm</td>`);
+        const humCells = idxs.map(i => i === undefined ? "<td>-</td>" : `<td>${h.relative_humidity_2m[i]}%</td>`);
+
+        return `<table>
+      <tr><th class="rowlabel"></th>${headCells.join("")}</tr>
+      ${row("天候", weatherCells)}
+      ${row("気温", tempCells)}
+      ${row("降水確率", popCells)}
+      ${row("降水量", precipCells)}
+      ${row("湿度", humCells)}
+    </table>`;
+      }
+
+      function buildWeekTable() {
+        const labels = ["明日", "明後日", "明々後日", "4日後", "5日後", "6日後", "7日後"];
+        const startIdx = 1;
+        const idxs = labels.map((_, i) => startIdx + i).filter(i => i < d.time.length);
+
+        const headCells = idxs.map((di, i) => `<th>${labels[i]}<br><span class="wtext">${fmtDate(d.time[di])}</span></th>`);
+        const weatherCells = idxs.map(di => `<td><span class="icon">${wIcon(d.weather_code[di])}</span><span class="wtext">${wText(d.weather_code[di])}</span></td>`);
+        const maxCells = idxs.map(di => `<td>${Math.round(d.temperature_2m_max[di])}℃</td>`);
+        const minCells = idxs.map(di => `<td>${Math.round(d.temperature_2m_min[di])}℃</td>`);
+        const popCells = idxs.map(di => `<td>${d.precipitation_probability_max[di]}%</td>`);
+
+        const row = (label, cells) => `<tr><th class="rowlabel">${label}</th>${cells.join("")}</tr>`;
+
+        return `<table>
+      <tr><th class="rowlabel"></th>${headCells.join("")}</tr>
+      ${row("天候", weatherCells)}
+      ${row("最高気温", maxCells)}
+      ${row("最低気温", minCells)}
+      ${row("降水確率", popCells)}
+    </table>`;
+      }
+
+      const todayKey = dateKeys[0];
+      const tomorrowKey = dateKeys[1];
+
+      const html = `
+    <h2>今日の天気（${fmtDate(todayKey)}）</h2>
+    ${buildHourlyTable(todayKey, TODAY_HOURS)}
+    <h2>明日の天気（${fmtDate(tomorrowKey)}）</h2>
+    ${buildHourlyTable(tomorrowKey, TODAY_HOURS)}
+    <h2>今週の天気</h2>
+    ${buildWeekTable()}
+  `;
+      document.getElementById("app").innerHTML = html;
+      document.getElementById("updated").textContent =
+        "最終更新: " + new Date().toLocaleString("ja-JP");
+
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "🔄 更新";
+      }
+    }
+
+    fetchWeather();
+
+    if (CONFIG.autoRefreshMinutes > 0) {
+      setInterval(fetchWeather, CONFIG.autoRefreshMinutes * 60 * 1000);
+    }
+  </script>
+</body>
+
+</html>
